@@ -31,7 +31,7 @@ function TodoItem(props) {
       <p>
         <input type="checkbox" onChange={props.markComplete.bind(this ,id)} />
         { title }
-        <button onClick={props.delTodo.bind(this ,id)} style={btnStle()}>XY</button>
+        <button onClick={props.delTodo.bind(this ,id)} style={btnStle()}>fff</button>
       </p>
     </div>
   )
