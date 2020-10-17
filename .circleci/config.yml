@@ -16,9 +16,6 @@ workflows:
 jobs:
   build:
     machine: true
-    #docker:
-      #- image: mimatila/rails-example-project
-    #working_directory: ~/pipelines/github/mimatila
     
     steps:
         - checkout
@@ -26,7 +23,6 @@ jobs:
             #name: Build and push Docker image to Heroku
             command: |
               curl https://cli-assets.heroku.com/install.sh | sh
-              docker login --username=faraby7 --password=MyHelsinki2020
               docker build -t react_todo_app .
               docker tag react_todo_app registry.heroku.com/react_todo_app/web
               heroku container:login
