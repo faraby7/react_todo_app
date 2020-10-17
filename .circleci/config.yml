@@ -1,29 +1,20 @@
 version: 2.1
 
-orbs:
-  heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
-
 workflows:
-  heroku_deploy:
+  build-deploy:
     jobs:
-      - build
-      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          requires:
-            - build
-          filters:
-            branches:
-              only: sequential-branch-filter
+      - build-deploy
+
 jobs:
-  build:
+  build-deploy:
     machine: true
-    
     steps:
-        - checkout
-        - run:          
-            #name: Build and push Docker image to Heroku
-            command: |
-              curl https://cli-assets.heroku.com/install.sh | sh
-              docker build -t react_todo_app .
-              docker tag react_todo_app registry.heroku.com/react_todo_app/web
-              heroku container:login
-              docker push registry.heroku.com/react_todo_app/web
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            set -x
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a react-todo-faraby web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a react-todo-faraby web
